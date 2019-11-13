@@ -1,0 +1,19 @@
+FROM debian:buster
+
+RUN apt-get -y update \
+	&& apt-get -y install \
+	iipimage-server \
+	lighttpd \
+	&& apt-get -y clean
+
+RUN groupadd -g 1001 appuser \
+    	&& useradd -u 1001 -m -g 1001 appuser \
+	&& mkdir -p -m 0444 /data
+
+COPY ./lighttpd.conf /etc/iipimage-lighttpd.conf
+
+VOLUME /data
+
+CMD ["/usr/sbin/lighttpd", "-D", "-f", "/etc/iipimage-lighttpd.conf"]
+
+USER 1001
