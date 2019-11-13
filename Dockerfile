@@ -1,6 +1,6 @@
 FROM debian:buster
 
-ENV LOGFILE=syslog VERBOSITY=1
+ENV LOGFILE=syslog
 
 RUN apt-get -y update \
 	&& apt-get -y install iipimage-server \
@@ -9,6 +9,11 @@ RUN apt-get -y update \
 RUN groupadd -g 1001 appuser \
     	&& useradd -u 1001 -m -g 1001 appuser \
 	&& mkdir -p -m 0444 /data
+
 VOLUME /data
 
+EXPOSE 9000
+
 CMD ["/usr/lib/iipimage-server/iipsrv.fcgi", "--bind", "0.0.0.0:9000"]
+
+USER 1001
