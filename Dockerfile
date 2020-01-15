@@ -1,6 +1,7 @@
 FROM fedora:31
 
-ENV LOGFILE=syslog
+ENV LOGFILE=/dev/stdout
+ENV VERBOSITY=1
 
 RUN dnf -y update \
 	&& dnf -y install iipsrv \
