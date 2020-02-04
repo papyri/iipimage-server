@@ -1,4 +1,4 @@
-# IIPImage container image
+# IIPImage v1.0 container image
 
 ## Requirements
 
