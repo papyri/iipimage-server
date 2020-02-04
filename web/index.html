@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+  <!-- <link rel="stylesheet" type="text/css" media="all" href="./iipmooviewer/css/iip.css" /> -->
+  <!-- <script type="text/javascript" src="./iipmooviewer/js/mootools-core-1.6.0-compressed.js"></script> -->
+  <!-- <script type="text/javascript" src="./iipmooviewer/js/iipmooviewer-2.0-min.js"></script> -->
+
+  <!-- <script type="text/javascript"> -->
+  <!--   new IIPMooViewer( "viewer", { -->
+  <!--       image: '/data/bd2273ea-fc83-4971-a4c8-937d0934927c', -->
+  <!--       server: '/fcgi-bin/iipsrv.fcgi' -->
+  <!--   } ); -->
+  <!-- </script> -->
+</head>
+<body>
+  <!-- <div id="viewer" style="width:100%;height:100%"></div> -->
+  <div id="openseadragon1" style="width: 800px; height: 600px;"></div>
+  <script src="/openseadragon/openseadragon.min.js"></script>
+  <script type="text/javascript">
+    var viewer = OpenSeadragon({
+        id: "openseadragon1",
+        tileSources: ["/fcgi-bin/iipsrv.fcgi?IIIF=/data/test.ptif/info.json"]
+    });
+  </script>
+</body>
+</html>
