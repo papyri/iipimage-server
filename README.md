@@ -27,7 +27,11 @@ Then, start the stack:
     $ docker-compose up -d
 
 Go to `http://localhost:8080/fcgi-bin/iipsrv.fcgi` in your browser. You will see the IIPImage
-splash page if it is working.
+splash page if it is working. You can append query strings in the usual way with IIPimage
+server.
+
+If you have a file at `data/test.ptif`, it should display with an OpenSeadragon test page at
+`http://localhost:8080`.
 
 Stop the stack with:
 
