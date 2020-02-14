@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  iipimage:
+    image: iipimage-server
+    build:
+      context: .
+    environment:
+      - VERBOSITY=5
+    volumes:
+      - ./data:/data
+
+  web:
+    image: iipimage-web
+    ports:
+      - "8080:8080"
