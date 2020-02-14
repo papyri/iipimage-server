@@ -11,4 +11,5 @@
 
 iipimage_1.0:
   extends: .build
-  iip_version: '1.0'
+  variables:
+    iip_version: '1.0'
