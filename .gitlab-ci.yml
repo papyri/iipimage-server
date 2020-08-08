@@ -1,15 +1,74 @@
+stages:
+  - build
+  - test
+  - release
+
+variables:
+  build_tag: $CI_REGISTRY_IMAGE/$iip_version:$CI_COMMIT_SHORT_SHA
+  release_tag: $CI_REGISTRY_IMAGE/$iip_version:latest
+
 .build:
   stage: build
-  variables:
-    image_tag: $CI_REGISTRY_IMAGE/$iip_version
   before_script:
+    - docker version
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - cd $iip_version
-    - docker build -t $image_tag .
-    - docker push $image_tag
+    - docker build --pull -t $build_tag - < $iip_version/Dockerfile
+    - docker push $build_tag
 
-iipimage_1.0:
-  extends: .build
+.test:
+  stage: test
+  before_script:
+    - docker version
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker pull $build_tag
+  script:
+    - ./test.sh
+
+.release:
+  stage: release
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker pull $build_tag
+    - docker tag $build_tag $release_tag
+    - docker push $release_tag
+  only:
+    - master
+
+.iipimage_1.0:
   variables:
     iip_version: '1.0'
+
+.iipimage_1.1:
+  variables:
+    iip_version: '1.1'
+
+build_1.0:
+  extends:
+    - .build
+    - .iipimage_1.0
+
+test_1.0:
+  extends:
+    - .test
+    - .iipimage_1.0
+
+release_1.0:
+  extends:
+    - .release
+    - .iipimage_1.0
+
+build_1.1:
+  extends:
+    - .build
+    - .iipimage_1.1
+
+test_1.1:
+  extends:
+    - .test
+    - .iipimage_1.1
+
+release_1.1:
+  extends:
+    - .release
+    - .iipimage_1.1
