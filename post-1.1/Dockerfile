@@ -1,13 +1,10 @@
 FROM gitlab-registry.oit.duke.edu/devops/containers/debian/buster:latest
 
+ARG IIPSRV_GIT_COMMIT=d4a701864877cb22ec6212c284ccd733ce3106d8
+
 # IIPImage variables
 ENV LOGFILE   /dev/stdout
 ENV VERBOSITY 1
-
-# Workaround for bug in IIPImage v1.1 release
-# https://duldev.atlassian.net/browse/DDR-2144
-# https://duldev.atlassian.net/browse/DDR-2048
-# ENV EMBED_ICC 0
 
 RUN set -eux; \
 	apt-get -y update; \
@@ -30,17 +27,14 @@ RUN set -eux; \
 	apt-get -y clean; \
 	rm -rf /var/lib/apt/lists/*
 
-WORKDIR /usr/src
+WORKDIR /opt/iipsrv
 
-# Creates /usr/src/iipsrv-iipsrv-1.1/src/iipsrv.fcgi
 RUN set -eux; \
-	curl -s -O https://automation.lib.duke.edu/iipsrv/1.1/iipsrv-1.1.tar.gz; \
-	curl -s https://automation.lib.duke.edu/iipsrv/1.1/iipsrv-1.1.tar.gz.sha512 \
-	  | sha512sum -c - \
-	  ; \
-	tar -zxvf iipsrv-1.1.tar.gz
-
-WORKDIR /usr/src/iipsrv-iipsrv-1.1
+	curl -s -O https://automation.lib.duke.edu/iipsrv/post-1.1/${IIPSRV_GIT_COMMIT}.tar.gz; \
+	curl -s https://automation.lib.duke.edu/iipsrv/post-1.1/${IIPSRV_GIT_COMMIT}.tar.gz.sha512 \
+ 	  | sha512sum -c - ; \
+	tar -zxvf ${IIPSRV_GIT_COMMIT}.tar.gz; \
+	rm ${IIPSRV_GIT_COMMIT}.tar.gz
 
 RUN set -eux; \
 	./autogen.sh; \
@@ -50,7 +44,7 @@ RUN set -eux; \
 RUN set -eux; \
 	useradd -u 1001 -m -N -g 0 -s /usr/sbin/nologin app-user; \
 	mkdir -p -m 0444 /data; \
-	ln -s /usr/src/iipsrv-iipsrv-1.1/src/iipsrv.fcgi /usr/local/bin/iipsrv.fcgi
+	ln -s /opt/iipsrv/src/iipsrv.fcgi /usr/local/bin/iipsrv.fcgi
 
 VOLUME /data
 

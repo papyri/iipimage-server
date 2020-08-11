@@ -43,6 +43,10 @@ variables:
   variables:
     iip_version: '1.1'
 
+.iipimage_post_1.1:
+  variables:
+    iip_version: 'post-1.1'
+
 build_1.0:
   extends:
     - .build
@@ -72,3 +76,18 @@ release_1.1:
   extends:
     - .release
     - .iipimage_1.1
+
+build_post_1.1:
+  extends:
+    - .build
+    - .iipimage_post_1.1
+
+test_post_1.1:
+  extends:
+    - .test
+    - .iipimage_post_1.1
+
+release_post_1.1:
+  extends:
+    - .release
+    - .iipimage_post_1.1
