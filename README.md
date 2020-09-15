@@ -1,4 +1,4 @@
-# IIPImage v1.0 container image
+# IIPImage container images
 
 ## Requirements
 
@@ -7,10 +7,20 @@
 
 ## Usage
 
-    $ docker pull gitlab-registry.oit.duke.edu/devops/containers/iipimage-server:latest
-    $ docker run --rm gitlab-registry.oit.duke.edu/devops/containers/iipimage-server:latest
+    $ docker pull gitlab-registry.oit.duke.edu/devops/containers/iipimage-server/[VERSION]:latest
+    $ docker run --rm gitlab-registry.oit.duke.edu/devops/containers/iipimage-server/[VERSION]:latest
+
+Replace `[VERSION]` with `1.0` or `1.1`.
 
 The default command runs the FCGI script and binds to port 9000.
+
+## Build
+
+    $ docker build --pull -t iipimage-server - < [VERSION]/Dockerfile
+
+For example:
+
+    $ docker build --pull -t iipimage-server - < 1.1/Dockerfile
 
 ## Full stack
 
