@@ -14,8 +14,10 @@ RUN set -eux; \
 	apt-get -y install \
 	autoconf \
 	autotools-dev \
+	cmake \
 	curl \
 	g++ \
+	git \
 	libfcgi-dev \
 	libjpeg-dev \
 	libmemcached-dev \
@@ -31,6 +33,16 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src
+
+RUN git clone https://github.com/uclouvain/openjpeg.git \
+  && cd openjpeg \
+  && git checkout v2.3.1 \
+  && mkdir build \
+  && cd build \
+  && cmake .. -DCMAKE_BUILD_TYPE=Release \
+  && make \
+  && make install \
+  && make clean
 
 # Creates /usr/src/iipsrv-iipsrv-1.1/src/iipsrv.fcgi
 RUN set -eux; \
